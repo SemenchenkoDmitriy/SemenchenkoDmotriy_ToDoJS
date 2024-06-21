@@ -83,8 +83,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const todoItem = todoList.children[index];
         const textSpan = todoItem.querySelector('.text');
         const oldText = textSpan.textContent;
-    }
 
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = oldText;
+        input.className = 'edit-input';
+
+        const saveText = () => {
+            todos[index].text = input.value.trim();
+            renderTodos();
+        };
+    
+        input.addEventListener('blur', saveText);
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                saveText();
+            }
+        });
+
+        todoItem.replaceChild(input, textSpan);
+        input.focus();
+    }
 
     renderTodos();
 });
