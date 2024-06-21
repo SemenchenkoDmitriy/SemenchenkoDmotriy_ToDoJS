@@ -25,6 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
             li.querySelector('.delete').addEventListener('click', () => {
                 deleteTodo(index);
             });
+            li.querySelector('.text').addEventListener('dblclick', () => {
+                editTodoText(index);
+            });
+
             todoList.appendChild(li);
         });
         updateCounters();
@@ -74,6 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTodos();
     }
     deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
+
+    function editTodoText(index) {
+        const todoItem = todoList.children[index];
+        const textSpan = todoItem.querySelector('.text');
+        const oldText = textSpan.textContent;
+    }
+
 
     renderTodos();
 });
