@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const todoList = document.querySelector('.todo-app ul');
     const itemsLeft = document.querySelector('.todo-app .center-text span:first-of-type');
     const itemsCompleted = document.querySelector('.todo-app .center-text span:last-of-type');
+    const checkAllButton = document.querySelector('.todo-app button:nth-of-type(2)');
 
     let todos = [];
 
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             todoList.appendChild(li);
         });
+        updateCounters();
     }
 
     function addTodo() {
@@ -47,6 +49,24 @@ document.addEventListener('DOMContentLoaded', () => {
             addTodo();
         }
     });
+
+    function toggleComplete(index) {
+        todos[index].completed = !todos[index].completed;
+        renderTodos();
+    }
+
+    function updateCounters() {
+        const remaining = todos.filter(todo => !todo.completed).length;
+        const completed = todos.filter(todo => todo.completed).length;
+        itemsLeft.textContent = `${remaining} items left`;
+        itemsCompleted.textContent = `${completed} completed`;
+    }
+
+    function checkAll() {
+        todos.forEach(todo => todo.completed = true);
+        renderTodos();
+    }
+    checkAllButton.addEventListener('click', checkAll);
 
     renderTodos();
 
