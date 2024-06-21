@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemsLeft = document.querySelector('.todo-app .center-text span:first-of-type');
     const itemsCompleted = document.querySelector('.todo-app .center-text span:last-of-type');
     const checkAllButton = document.querySelector('.todo-app button:nth-of-type(2)');
+    const deleteAllCompletedButton = document.querySelector('.todo-app button:nth-of-type(3)');
 
     let todos = [];
 
@@ -68,6 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     checkAllButton.addEventListener('click', checkAll);
 
-    renderTodos();
+    function deleteAllCompleted() {
+        todos = todos.filter(todo => !todo.completed);
+        renderTodos();
+    }
+    deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
 
+    renderTodos();
 });
