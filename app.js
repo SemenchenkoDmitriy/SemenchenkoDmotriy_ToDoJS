@@ -71,13 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
         todos.forEach(todo => todo.completed = true);
         renderTodos();
     }
-    checkAllButton.addEventListener('click', checkAll);
 
     function deleteAllCompleted() {
         todos = todos.filter(todo => !todo.completed);
         renderTodos();
     }
-    deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
 
     function editTodoText(index) {
         const todoItem = todoList.children[index];
@@ -104,6 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
         todoItem.replaceChild(input, textSpan);
         input.focus();
     }
+
+    checkAllButton.addEventListener('click', checkAll);
+    deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
 
     renderTodos();
 });
