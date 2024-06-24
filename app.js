@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
         input.focus();
     };
 
-    addButton.addEventListener('click', addTodo);
     input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             addTodo();
@@ -105,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     checkAllButton.addEventListener('click', checkAll);
     deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
-
+    addButton.addEventListener('click', addTodo);
+    
     renderTodos();
 });
