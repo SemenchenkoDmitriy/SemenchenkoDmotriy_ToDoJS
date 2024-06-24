@@ -6,21 +6,29 @@
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 body {
     background-color: #ee8cc2;
     padding: 2rem;
 }
+
 button {
- background: #008EB0; /* Синий цвет фона */
- color: #fff; /* Белый цвет текста */
+    background: #008EB0; /* Синий цвет фона */
+    color: #fff; /* Белый цвет текста */
 }
-.red { background: #C1172C; }
+
+.red {
+    background: #C1172C;
+}
+
 .center-text {
     text-align: center;
 }
+
 .todo-item input[type="checkbox"] {
     margin-right: 1rem;
 }
+
 .todo-item {
     display: flex;
     align-items: center;
@@ -28,17 +36,21 @@ button {
     padding: 0.5rem 0;
     border-bottom: 1px solid #ddd;
 }
+
 .todo-item .text {
     flex: 1;
 }
+
 .todo-item .delete {
     color: red;
     cursor: pointer;
 }
-  textarea::placeholder {
+
+textarea::placeholder {
     text-align: center;
 }
+
 .add-button {
-    background: #ffffff;
-    color:#000000;
+    background: #008EB0; /* Синий цвет фона */
+    color: #fff; /* Белый цвет текста */
 }

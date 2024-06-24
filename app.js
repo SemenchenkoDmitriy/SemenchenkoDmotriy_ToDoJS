@@ -2,35 +2,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector('.todo-app input[type="text"]');
     const addButton = document.querySelector('.add-button');
     const todoList = document.querySelector('.todo-app ul');
-    const itemsLeft = document.querySelector('.todo-app .center-text span:first-of-type');
-    const itemsCompleted = document.querySelector('.todo-app .center-text span:last-of-type');
-    const checkAllButton = document.querySelector('.todo-app button:nth-of-type(2)');
-    const deleteAllCompletedButton = document.querySelector('.todo-app button:nth-of-type(3)');
+    const checkAllCheckbox = document.getElementById('check-all');
+    const deleteAllCompletedButton = document.querySelector('.todo-app button:nth-of-type(2)');
+    const filterAllButton = document.getElementById('filter-all');
+    const filterActiveButton = document.getElementById('filter-active');
+    const filterCompletedButton = document.getElementById('filter-completed');
 
     let todos = [];
 
     const renderTodos = () => {
-        todoList.innerHTML = '';
-        todos.forEach((todo, index) => {
-            const li = document.createElement('li');
-            li.className = 'todo-item';
-            li.innerHTML = `
-                <input type="checkbox" ${todo.completed ? 'checked' : ''}>
-                <span class="text">${todo.text}</span>
-                <span class="delete">&times;</span>
-            `;
-            li.querySelector('input[type="checkbox"]').addEventListener('change', () => {
-                toggleComplete(index);
-            });
-            li.querySelector('.delete').addEventListener('click', () => {
-                deleteTodo(index);
-            });
-            li.querySelector('.text').addEventListener('dblclick', () => {
-                editTodoText(index);
-            });
+        todoList.innerHTML = todos.map((todo, index) => `
+            <li class="todo-item">
+                <input type="checkbox" ${todo.completed ? 'checked' : ''} data-index="${index}">
+                <span class="text" data-index="${index}">${todo.text}</span>
+                <span class="delete" data-index="${index}">&times;</span>
+            </li>
+        `).join('');
 
-            todoList.appendChild(li);
-        });
         updateCounters();
     };
 
@@ -54,15 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const updateCounters = () => {
-        const remaining = todos.filter(todo => !todo.completed).length;
-        const completed = todos.filter(todo => todo.completed).length;
-        itemsLeft.textContent = `${remaining} tasks active`;
-        itemsCompleted.textContent = `${completed} completed`;
-    };
-
-    const checkAll = () => {
-        todos.forEach(todo => todo.completed = true);
-        renderTodos();
+        const remaining = todos.reduce((count, todo) => !todo.completed ? count + 1 : count, 0);
+        const completed = todos.length - remaining;
+        filterAllButton.textContent = `All (${todos.length})`;
+        filterActiveButton.textContent = `Active (${remaining})`;
+        filterCompletedButton.textContent = `Completed (${completed})`;
     };
 
     const deleteAllCompleted = () => {
@@ -96,15 +80,37 @@ document.addEventListener('DOMContentLoaded', () => {
         input.focus();
     };
 
+    const checkAllTodos = (event) => {
+        const isChecked = event.target.checked;
+        todos.forEach(todo => {
+            todo.completed = isChecked;
+        });
+        renderTodos();
+    };
+
     input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             addTodo();
         }
     });
 
-    checkAllButton.addEventListener('click', checkAll);
-    deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
     addButton.addEventListener('click', addTodo);
-    
+    deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
+    checkAllCheckbox.addEventListener('change', checkAllTodos);
+
+    todoList.addEventListener('change', (event) => {
+        if (event.target.matches('input[type="checkbox"]')) {
+            toggleComplete(event.target.dataset.index);
+        }
+    });
+
+    todoList.addEventListener('click', (event) => {
+        if (event.target.matches('.delete')) {
+            deleteTodo(event.target.dataset.index);
+        } else if (event.target.matches('.text')) {
+            editTodoText(event.target.dataset.index);
+        }
+    });
+
     renderTodos();
 });
