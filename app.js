@@ -17,85 +17,85 @@ const filterAllButton = document.getElementById(FILTER_ALL_BUTTON_ID);
 const filterActiveButton = document.getElementById(FILTER_ACTIVE_BUTTON_ID);
 const filterCompletedButton = document.getElementById(FILTER_COMPLETED_BUTTON_ID);
 
-  let todos = [];
+let todos = [];
 
-  const renderTodos = () => {
-    todoList.innerHTML = todos.map((todo, index) => `
-      <li class="todo-item">
-        <input type="checkbox" ${todo.completed ? 'checked' : ''} data-index="${index}">
-        <span class="text" data-index="${index}">${todo.text}</span>
-        <span class="delete" data-index="${index}">&times;</span>
-      </li>
-    `).join('');
+const renderTodos = () => {
+  todoList.innerHTML = todos.map((todo, index) => `
+    <li class="todo-item">
+      <input type="checkbox" ${todo.completed ? 'checked' : ''} data-index="${index}">
+      <span class="text" data-index="${index}">${todo.text}</span>
+      <span class="delete" data-index="${index}">&times;</span>
+     </li>
+  `).join('');
 
-    updateCounters();
+  updateCounters();
+};
+
+const addTodo = () => {
+  const text = input.value.trim();
+  if (text !== '') {
+    todos.push({ text, completed: false });
+    input.value = '';
+    renderTodos();
+  }
+};
+
+const deleteTodo = (index) => {
+  todos.splice(index, 1);
+  renderTodos();
+};
+
+const toggleComplete = (index) => {
+  todos[index].completed = !todos[index].completed;
+  renderTodos();
+};
+
+const updateCounters = () => {
+  const remaining = todos.reduce((count, todo) => !todo.completed ? count + 1 : count, 0);
+  const completed = todos.length - remaining;
+  filterAllButton.textContent = `All (${todos.length})`;
+  filterActiveButton.textContent = `Active (${remaining})`;
+  filterCompletedButton.textContent = `Completed (${completed})`;
+};
+
+const deleteAllCompleted = () => {
+  todos = todos.filter(todo => !todo.completed);
+  renderTodos();
+};
+
+const editTodoText = (index) => {
+  const todoItem = todoList.children[index];
+  const textSpan = todoItem.querySelector('.text');
+  const oldText = textSpan.textContent;
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = oldText;
+  input.className = 'edit-input';
+
+  const saveText = () => {
+    todos[index].text = input.value.trim();
+    renderTodos();
   };
 
-  const addTodo = () => {
-    const text = input.value.trim();
-    if (text !== '') {
-      todos.push({ text, completed: false });
-      input.value = '';
-      renderTodos();
+  input.addEventListener('blur', saveText);
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      saveText();
     }
-  };
+  });
 
-  const deleteTodo = (index) => {
-    todos.splice(index, 1);
-    renderTodos();
-  };
+  todoItem.replaceChild(input, textSpan);
+  input.focus();
+};
 
-  const toggleComplete = (index) => {
-    todos[index].completed = !todos[index].completed;
-    renderTodos();
-  };
-
-  const updateCounters = () => {
-    const remaining = todos.reduce((count, todo) => !todo.completed ? count + 1 : count, 0);
-    const completed = todos.length - remaining;
-    filterAllButton.textContent = `All (${todos.length})`;
-    filterActiveButton.textContent = `Active (${remaining})`;
-    filterCompletedButton.textContent = `Completed (${completed})`;
-  };
-
-  const deleteAllCompleted = () => {
-    todos = todos.filter(todo => !todo.completed);
-    renderTodos();
-  };
-
-  const editTodoText = (index) => {
-    const todoItem = todoList.children[index];
-    const textSpan = todoItem.querySelector('.text');
-    const oldText = textSpan.textContent;
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = oldText;
-    input.className = 'edit-input';
-
-    const saveText = () => {
-      todos[index].text = input.value.trim();
-      renderTodos();
-    };
-
-    input.addEventListener('blur', saveText);
-    input.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        saveText();
-      }
+const checkAllTodos = (event) => {
+  const isChecked = event.target.checked;
+  todos.forEach(todo => {
+    todo.completed = isChecked;
     });
-
-    todoItem.replaceChild(input, textSpan);
-    input.focus();
-  };
-
-  const checkAllTodos = (event) => {
-    const isChecked = event.target.checked;
-    todos.forEach(todo => {
-      todo.completed = isChecked;
-    });
-    renderTodos();
-  };
+  renderTodos();
+};
 
 const handleInputKeydown = (event) => {
   if (event.key === 'Enter') {
