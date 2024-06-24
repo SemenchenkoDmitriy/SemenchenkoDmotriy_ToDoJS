@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let todos = [];
 
-    function renderTodos() {
+    const renderTodos = () => {
         todoList.innerHTML = '';
         todos.forEach((todo, index) => {
             const li = document.createElement('li');
@@ -32,52 +32,45 @@ document.addEventListener('DOMContentLoaded', () => {
             todoList.appendChild(li);
         });
         updateCounters();
-    }
+    };
 
-    function addTodo() {
+    const addTodo = () => {
         const text = input.value.trim();
         if (text !== '') {
             todos.push({ text, completed: false });
             input.value = '';
             renderTodos();
         }
-    }
+    };
 
-    function deleteTodo(index) {
+    const deleteTodo = (index) => {
         todos.splice(index, 1);
         renderTodos();
-    }
-    
-    addButton.addEventListener('click', addTodo);
-    input.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            addTodo();
-        }
-    });
+    };
 
-    function toggleComplete(index) {
+    const toggleComplete = (index) => {
         todos[index].completed = !todos[index].completed;
         renderTodos();
-    }
+    };
 
-    function updateCounters() {
+    const updateCounters = () => {
         const remaining = todos.filter(todo => !todo.completed).length;
         const completed = todos.filter(todo => todo.completed).length;
         itemsLeft.textContent = `${remaining} items left`;
         itemsCompleted.textContent = `${completed} completed`;
-    }
+    };
 
-    function checkAll() {
+    const checkAll = () => {
         todos.forEach(todo => todo.completed = true);
         renderTodos();
-    }
+    };
 
-    function deleteAllCompleted() {
+    const deleteAllCompleted = () => {
         todos = todos.filter(todo => !todo.completed);
         renderTodos();
-    }
+    };
 
-    function editTodoText(index) {
+    const editTodoText = (index) => {
         const todoItem = todoList.children[index];
         const textSpan = todoItem.querySelector('.text');
         const oldText = textSpan.textContent;
@@ -91,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             todos[index].text = input.value.trim();
             renderTodos();
         };
-    
+
         input.addEventListener('blur', saveText);
         input.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
@@ -101,11 +94,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         todoItem.replaceChild(input, textSpan);
         input.focus();
-    }
+    };
+
+    addButton.addEventListener('click', addTodo);
+    input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            addTodo();
+        }
+    });
 
     checkAllButton.addEventListener('click', checkAll);
     deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
 
-    
     renderTodos();
 });
