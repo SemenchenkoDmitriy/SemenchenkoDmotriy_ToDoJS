@@ -18,14 +18,21 @@ const filterActiveButton = document.getElementById(FILTER_ACTIVE_BUTTON_ID);
 const filterCompletedButton = document.getElementById(FILTER_COMPLETED_BUTTON_ID);
 
 let todos = [];
+let currentFilter = 'all';
 
 const renderTodos = () => {
-  todoList.innerHTML = todos.map((todo, index) => `
+  const filteredTodos = todos.filter(todo => {
+    if (currentFilter === 'active') return !todo.completed;
+    if (currentFilter === 'completed') return todo.completed;
+    return true;
+  });
+
+  todoList.innerHTML = filteredTodos.map((todo, index) => `
     <li class="todo-item">
       <input type="checkbox" ${todo.completed ? 'checked' : ''} data-index="${index}">
       <span class="text" data-index="${index}">${todo.text}</span>
       <span class="delete" data-index="${index}">&times;</span>
-     </li>
+    </li>
   `).join('');
 
   updateCounters();
@@ -93,12 +100,12 @@ const checkAllTodos = (event) => {
   const isChecked = event.target.checked;
   todos.forEach(todo => {
     todo.completed = isChecked;
-    });
+  });
   renderTodos();
 };
 
 const handleInputKeydown = (event) => {
-  if (event.key === 'Enter') {
+    if (event.key === 'Enter') {
     addTodo();
   }
 };
@@ -117,12 +124,20 @@ const handleTodoListClick = (event) => {
   }
 };
 
+const handleFilterClick = (filter) => {
+  currentFilter = filter;
+  renderTodos();
+};
+
 input.addEventListener('keydown', handleInputKeydown);
 addButton.addEventListener('click', addTodo);
 deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
 checkAllCheckbox.addEventListener('change', checkAllTodos);
 todoList.addEventListener('change', handleTodoListChange);
 todoList.addEventListener('click', handleTodoListClick);
+filterAllButton.addEventListener('click', () => handleFilterClick('all'));
+filterActiveButton.addEventListener('click', () => handleFilterClick('active'));
+filterCompletedButton.addEventListener('click', () => handleFilterClick('completed'));
 
 renderTodos();
 });
