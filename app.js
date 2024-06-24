@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateCounters = () => {
         const remaining = todos.filter(todo => !todo.completed).length;
         const completed = todos.filter(todo => todo.completed).length;
-        itemsLeft.textContent = `${remaining} items left`;
+        itemsLeft.textContent = `${remaining} tasks active`;
         itemsCompleted.textContent = `${completed} completed`;
     };
 
