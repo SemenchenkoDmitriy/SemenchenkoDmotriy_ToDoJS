@@ -106,5 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAllButton.addEventListener('click', checkAll);
     deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
 
+    
     renderTodos();
 });
