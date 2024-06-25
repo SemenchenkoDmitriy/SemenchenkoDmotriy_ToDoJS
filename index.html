@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDoJS App</title>
-    <link rel="stylesheet" href="./styles.css">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="todo-app">
-        <h1 class="center-text">ToDoJS App</h1>
-        <input type="text" placeholder="Add a new todo...">
+        <h1 class="center-text">Todo List</h1>
+        <input type="text" placeholder="Add a new todo">
         <button class="add-button">Add</button>
-        <br><br>
-        <input type="checkbox" id="check-all"> Check all todos
-        <br><br>
         <ul></ul>
-        <br>
-        <button>Delete All Completed</button>
-        <br><br>
-        <div class="center-text">
-            <button id="filter-all">All (0)</button>
-            <button id="filter-active">Active (0)</button>
-            <button id="filter-completed">Completed (0)</button>
+        <div>
+            <input type="checkbox" id="check-all">
+            <label for="check-all">Check All</label>
         </div>
+        <button class="red">Delete All Completed</button>
+        <div class="filters center-text">
+            <button id="filter-all">All</button>
+            <button id="filter-active">Active</button>
+            <button id="filter-completed">Completed</button>
+        </div>
+        <div class="pagination center-text"></div> <!-- Контейнер для пагинации -->
     </div>
-    <script src="./app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

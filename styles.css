@@ -15,6 +15,11 @@ body {
 button {
     background: #008EB0; /* Синий цвет фона */
     color: #fff; /* Белый цвет текста */
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    cursor: pointer;
+    border-radius: 3px;
 }
 
 .red {
@@ -53,4 +58,37 @@ textarea::placeholder {
 .add-button {
     background: #008EB0; /* Синий цвет фона */
     color: #fff; /* Белый цвет текста */
+}
+
+.filters button.active {
+    background: #004D66; /* Темно-синий цвет для активного состояния */
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.pagination button {
+    background: #008EB0; /* Синий цвет фона */
+    color: #fff; /* Белый цвет текста */
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.pagination button:disabled {
+    background: #ddd;
+    cursor: not-allowed;
+}
+
+.pagination .page-number {
+    background: transparent;
+    color: #000;
+    border: none;
+    margin: 0 0.5rem;
+    cursor: pointer;
 }
