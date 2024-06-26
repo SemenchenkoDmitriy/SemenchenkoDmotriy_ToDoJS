@@ -1,3 +1,8 @@
+body {
+    background-color: #ee8cc2;
+    padding: 2rem;
+}
+
 .todo-app {
     max-width: 600px;
     margin: 0 auto;
@@ -5,11 +10,6 @@
     padding: 2rem;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-body {
-    background-color: #ee8cc2;
-    padding: 2rem;
 }
 
 button {
@@ -64,6 +64,13 @@ textarea::placeholder {
     background: #004D66; /* Темно-синий цвет для активного состояния */
 }
 
+.pagination-container {
+    height: 50px; /* Adjust the height as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -91,4 +98,8 @@ textarea::placeholder {
     border: none;
     margin: 0 0.5rem;
     cursor: pointer;
+}
+
+.todo-list {
+    min-height: calc(5 * 3rem); /* Adjust 3rem to the height of a single todo item */
 }

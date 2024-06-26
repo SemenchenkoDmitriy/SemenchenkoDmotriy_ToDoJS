@@ -148,21 +148,11 @@ const handleFilterClick = (filter) => {
 const updateFilterButtons = () => {
     filterAllButton.classList.toggle('active', currentFilter === 'all');
     filterActiveButton.classList.toggle('active', currentFilter === 'active');
-    filterCompletedButton.classList.toggle('active', currentFilter === 'completed');
+        filterCompletedButton.classList.toggle('active', currentFilter === 'completed');
 };
 
 const renderPagination = (totalPages) => {
     paginationContainer.innerHTML = '';
-
-    if (currentPage > 1) {
-        const prevButton = document.createElement('button');
-        prevButton.textContent = 'Previous';
-        prevButton.addEventListener('click', () => {
-            currentPage -= 1;
-            renderTodos();
-        });
-        paginationContainer.appendChild(prevButton);
-    }
 
     for (let i = 1; i <= totalPages; i++) {
         const pageButton = document.createElement('button');
@@ -176,16 +166,6 @@ const renderPagination = (totalPages) => {
             renderTodos();
         });
         paginationContainer.appendChild(pageButton);
-    }
-
-    if (currentPage < totalPages) {
-        const nextButton = document.createElement('button');
-        nextButton.textContent = 'Next';
-        nextButton.addEventListener('click', () => {
-            currentPage += 1;
-            renderTodos();
-        });
-        paginationContainer.appendChild(nextButton);
     }
 };
 
