@@ -25,19 +25,8 @@ let currentFilter = 'all';
 let currentPage = 1;
 
 const renderTodos = () => {
-    const filteredTodos = todos.filter(todo => {
-        if (currentFilter === 'active') return !todo.completed;
-        if (currentFilter === 'completed') return todo.completed;
-        return true;
-    });
-
-    const totalPages = Math.ceil(filteredTodos.length / ITEMS_PER_PAGE);
-    currentPage = Math.min(currentPage, totalPages);
-
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-
-    const paginatedTodos = filteredTodos.slice(start, end);
+    const filteredTodos = filterTodos(todos, currentFilter);
+    const { paginatedTodos, totalPages } = paginateTodos(filteredTodos, currentPage, ITEMS_PER_PAGE);
 
     todoList.innerHTML = paginatedTodos.map((todo, index) => `
         <li class="todo-item" data-id="${todos.indexOf(todo)}">
@@ -50,6 +39,27 @@ const renderTodos = () => {
     updateCounters();
     renderPagination(totalPages);
     updateFilterButtons();
+};
+
+const filterTodos = (todos, filter) => {
+    return todos.filter(todo => {
+        if (filter === 'active') return !todo.completed;
+        if (filter === 'completed') return todo.completed;
+        return true;
+    });
+};
+
+const paginateTodos = (todos, page, itemsPerPage) => {
+    const totalPages = Math.ceil(todos.length / itemsPerPage);
+    page = Math.min(page, totalPages);
+
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+
+    return {
+        paginatedTodos: todos.slice(start, end),
+        totalPages: totalPages,
+    };
 };
 
 const addTodo = () => {
@@ -85,27 +95,33 @@ const deleteAllCompleted = () => {
     renderTodos();
 };
 
-const editTodoText = (index) => {
-    const todoItem = todoList.querySelector(`li[data-id="${index}"]`);
-    const textSpan = todoItem.querySelector('.text');
-    const oldText = textSpan.textContent;
-
+const createEditInput = (index, oldText, saveTextCallback) => {
     const input = document.createElement('input');
     input.type = 'text';
     input.value = oldText;
     input.className = 'edit-input';
+
+    input.addEventListener('blur', saveTextCallback);
+    input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            saveTextCallback();
+        }
+    });
+
+    return input;
+};
+
+const editTodoText = (index) => {
+    const todoItem = todoList.querySelector(`li[data-id="${index}"]`);
+    const textSpan = todoItem.querySelector('.text');
+    const oldText = textSpan.textContent;
 
     const saveText = () => {
         todos[index].text = input.value.trim();
         renderTodos();
     };
 
-    input.addEventListener('blur', saveText);
-    input.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            saveText();
-        }
-    });
+    const input = createEditInput(index, oldText, saveText);
 
     todoItem.replaceChild(input, textSpan);
     input.focus();
@@ -134,7 +150,11 @@ const handleTodoListChange = (event) => {
 const handleTodoListClick = (event) => {
     if (event.target.matches('.delete')) {
         deleteTodo(event.target.closest('li').dataset.id);
-    } else if (event.target.matches('.text')) {
+    }
+};
+
+const handleTodoListDoubleClick = (event) => {
+    if (event.target.matches('.text')) {
         editTodoText(event.target.closest('li').dataset.id);
     }
 };
@@ -148,7 +168,7 @@ const handleFilterClick = (filter) => {
 const updateFilterButtons = () => {
     filterAllButton.classList.toggle('active', currentFilter === 'all');
     filterActiveButton.classList.toggle('active', currentFilter === 'active');
-        filterCompletedButton.classList.toggle('active', currentFilter === 'completed');
+    filterCompletedButton.classList.toggle('active', currentFilter === 'completed');
 };
 
 const renderPagination = (totalPages) => {
@@ -175,6 +195,7 @@ deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
 checkAllCheckbox.addEventListener('change', checkAllTodos);
 todoList.addEventListener('change', handleTodoListChange);
 todoList.addEventListener('click', handleTodoListClick);
+todoList.addEventListener('dblclick', handleTodoListDoubleClick);
 filterAllButton.addEventListener('click', () => handleFilterClick('all'));
 filterActiveButton.addEventListener('click', () => handleFilterClick('active'));
 filterCompletedButton.addEventListener('click', () => handleFilterClick('completed'));
