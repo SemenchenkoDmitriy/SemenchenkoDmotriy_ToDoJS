@@ -1,24 +1,15 @@
-const INPUT_SELECTOR = '.todo-app input[type="text"]';
-const ADD_BUTTON_SELECTOR = '.add-button';
-const TODO_LIST_SELECTOR = '.todo-app ul';
-const CHECK_ALL_CHECKBOX_ID = 'check-all';
-const DELETE_ALL_COMPLETED_BUTTON_SELECTOR = '.todo-app button.red';
-const FILTER_ALL_BUTTON_ID = 'filter-all';
-const FILTER_ACTIVE_BUTTON_ID = 'filter-active';
-const FILTER_COMPLETED_BUTTON_ID = 'filter-completed';
-const PAGINATION_CONTAINER_SELECTOR = '.pagination';
+document.addEventListener('DOMContentLoaded', () => {
 const ITEMS_PER_PAGE = 5;
 
-document.addEventListener('DOMContentLoaded', () => {
-const input = document.querySelector(INPUT_SELECTOR);
-const addButton = document.querySelector(ADD_BUTTON_SELECTOR);
-const todoList = document.querySelector(TODO_LIST_SELECTOR);
-const checkAllCheckbox = document.getElementById(CHECK_ALL_CHECKBOX_ID);
-const deleteAllCompletedButton = document.querySelector(DELETE_ALL_COMPLETED_BUTTON_SELECTOR);
-const filterAllButton = document.getElementById(FILTER_ALL_BUTTON_ID);
-const filterActiveButton = document.getElementById(FILTER_ACTIVE_BUTTON_ID);
-const filterCompletedButton = document.getElementById(FILTER_COMPLETED_BUTTON_ID);
-const paginationContainer = document.querySelector(PAGINATION_CONTAINER_SELECTOR);
+const input = document.querySelector('.todo-app input[type="text"]');
+const addButton = document.querySelector('.add-button');
+const todoList = document.querySelector('.todo-app ul');
+const checkAllCheckbox = document.getElementById('check-all');
+const deleteAllCompletedButton = document.querySelector('.todo-app button.red');
+const filterAllButton = document.getElementById('filter-all');
+const filterActiveButton = document.getElementById('filter-active');
+const filterCompletedButton = document.getElementById('filter-completed');
+const paginationContainer = document.querySelector('.pagination');
 
 let todos = [];
 let currentFilter = 'all';
