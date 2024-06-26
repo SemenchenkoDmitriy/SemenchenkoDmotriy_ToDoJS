@@ -130,7 +130,7 @@ const editTodoText = (index) => {
 const checkAllTodos = (event) => {
     const isChecked = event.target.checked;
     todos.forEach(todo => {
-        todo.completed = isChecked;
+    todo.completed = isChecked;
     });
     renderTodos();
 };
