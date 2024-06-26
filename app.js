@@ -1,6 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
+(() => {
 const ITEMS_PER_PAGE = 5;
-
 const input = document.querySelector('.todo-app input[type="text"]');
 const addButton = document.querySelector('.add-button');
 const todoList = document.querySelector('.todo-app ul');
@@ -19,13 +18,16 @@ const renderTodos = () => {
     const filteredTodos = filterTodos(todos, currentFilter);
     const { paginatedTodos, totalPages } = paginateTodos(filteredTodos, currentPage, ITEMS_PER_PAGE);
 
-    todoList.innerHTML = paginatedTodos.map((todo, index) => `
-        <li class="todo-item" data-id="${todos.indexOf(todo)}">
-            <input type="checkbox" ${todo.completed ? 'checked' : ''} data-index="${index}">
-            <span class="text" data-index="${index}">${todo.text}</span>
-            <span class="delete" data-index="${index}">&times;</span>
-        </li>
-    `).join('');
+    todoList.innerHTML = "";
+    paginatedTodos.forEach((todo, index) => {
+        todoList.innerHTML += `
+            <li class="todo-item" data-id="${todos.indexOf(todo)}">
+                <input type="checkbox" ${todo.completed ? 'checked' : ''} data-index="${index}">
+                <span class="text" data-index="${index}">${todo.text}</span>
+                 <span class="delete" data-index="${index}">&times;</span>
+            </li>
+        `;
+    });
 
     updateCounters();
     renderPagination(totalPages);
@@ -92,13 +94,6 @@ const createEditInput = (index, oldText, saveTextCallback) => {
     input.value = oldText;
     input.className = 'edit-input';
 
-    input.addEventListener('blur', saveTextCallback);
-    input.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            saveTextCallback();
-        }
-    });
-
     return input;
 };
 
@@ -118,10 +113,20 @@ const editTodoText = (index) => {
     input.focus();
 };
 
+const handleEditInput = (event) => {
+    if (event.target.matches('.edit-input')) {
+        if (event.type === 'focusout' || (event.type === 'keydown' && event.key === 'Enter')) {
+            const index = event.target.closest('li').dataset.id;
+            todos[index].text = event.target.value.trim();
+        renderTodos();
+        }
+    }
+};
+
 const checkAllTodos = (event) => {
     const isChecked = event.target.checked;
     todos.forEach(todo => {
-    todo.completed = isChecked;
+        todo.completed = isChecked;
     });
     renderTodos();
 };
@@ -172,11 +177,14 @@ const renderPagination = (totalPages) => {
         if (i === currentPage) {
             pageButton.disabled = true;
         }
-        pageButton.addEventListener('click', () => {
-            currentPage = i;
-            renderTodos();
-        });
         paginationContainer.appendChild(pageButton);
+    }
+};
+
+const handlePageClick = (event) => {
+    if (event.target.matches('.page-number')) {
+        currentPage = parseInt(event.target.textContent, 10);
+        renderTodos();
     }
 };
 
@@ -190,6 +198,10 @@ todoList.addEventListener('dblclick', handleTodoListDoubleClick);
 filterAllButton.addEventListener('click', () => handleFilterClick('all'));
 filterActiveButton.addEventListener('click', () => handleFilterClick('active'));
 filterCompletedButton.addEventListener('click', () => handleFilterClick('completed'));
+todoList.addEventListener('focusout', handleEditInput);
+todoList.addEventListener('keydown', handleEditInput);
+paginationContainer.addEventListener('click', handlePageClick);
 
 renderTodos();
-});
+
+})();
