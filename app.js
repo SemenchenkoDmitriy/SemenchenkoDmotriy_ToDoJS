@@ -14,17 +14,18 @@ let todos = [];
 let currentFilter = 'all';
 let currentPage = 1;
 
+// Отображение списка задач с учетом фильтрации и пагинации
 const renderTodos = () => {
     const filteredTodos = filterTodos(todos, currentFilter);
     const { paginatedTodos, totalPages } = paginateTodos(filteredTodos, currentPage, ITEMS_PER_PAGE);
 
     todoList.innerHTML = "";
-    paginatedTodos.forEach((todo, index) => {
+    paginatedTodos.forEach((todo) => {
         todoList.innerHTML += `
-            <li class="todo-item" data-id="${todos.indexOf(todo)}">
-                <input type="checkbox" ${todo.completed ? 'checked' : ''} data-index="${index}">
-                <span class="text" data-index="${index}">${todo.text}</span>
-                 <span class="delete" data-index="${index}">&times;</span>
+            <li class="todo-item" data-id="${todo.id}">
+                <input type="checkbox" ${todo.completed ? 'checked' : ''} data-id="${todo.id}">
+                <span class="text" data-id="${todo.id}">${todo.text}</span>
+                <span class="delete" data-id="${todo.id}">&times;</span>
             </li>
         `;
     });
@@ -34,14 +35,16 @@ const renderTodos = () => {
     updateFilterButtons();
 };
 
+// Фильтрация задач по текущему фильтру (все, активные, выполненные)
 const filterTodos = (todos, filter) => {
     return todos.filter(todo => {
         if (filter === 'active') return !todo.completed;
         if (filter === 'completed') return todo.completed;
-        return true;
+            return true;
     });
 };
 
+// Пагинация задач
 const paginateTodos = (todos, page, itemsPerPage) => {
     const totalPages = Math.ceil(todos.length / itemsPerPage);
     page = Math.min(page, totalPages);
@@ -55,26 +58,33 @@ const paginateTodos = (todos, page, itemsPerPage) => {
     };
 };
 
+// Добавление новой задачи
 const addTodo = () => {
     const text = input.value.trim();
     if (text !== '') {
-        todos.push({ text, completed: false });
+        todos.push({ id: Date.now(), text, completed: false });
         input.value = '';
         currentPage = Math.ceil(todos.length / ITEMS_PER_PAGE);
         renderTodos();
     }
 };
 
-const deleteTodo = (index) => {
-    todos.splice(index, 1);
+// Удаление задачи по id
+const deleteTodo = (id) => {
+    todos = todos.filter(todo => todo.id !== parseInt(id, 10));
     renderTodos();
 };
 
-const toggleComplete = (index) => {
-    todos[index].completed = !todos[index].completed;
+// Переключение состояния выполнения задачи
+const toggleComplete = (id) => {
+        const todo = todos.find(todo => todo.id === parseInt(id, 10));
+    if (todo) {
+        todo.completed = !todo.completed;
+    }
     renderTodos();
 };
 
+// Обновление счетчиков задач (все, активные, выполненные)
 const updateCounters = () => {
     const remaining = todos.reduce((count, todo) => !todo.completed ? count + 1 : count, 0);
     const completed = todos.length - remaining;
@@ -83,12 +93,14 @@ const updateCounters = () => {
     filterCompletedButton.textContent = `Completed (${completed})`;
 };
 
+// Удаление всех выполненных задач
 const deleteAllCompleted = () => {
     todos = todos.filter(todo => !todo.completed);
     renderTodos();
 };
 
-const createEditInput = (index, oldText, saveTextCallback) => {
+// Создание элемента ввода для редактирования текста задачи
+const createEditInput = (id, oldText, saveTextCallback) => {
     const input = document.createElement('input');
     input.type = 'text';
     input.value = oldText;
@@ -97,32 +109,41 @@ const createEditInput = (index, oldText, saveTextCallback) => {
     return input;
 };
 
-const editTodoText = (index) => {
-    const todoItem = todoList.querySelector(`li[data-id="${index}"]`);
+// Редактирование текста задачи
+const editTodoText = (id) => {
+    const todoItem = todoList.querySelector(`li[data-id="${id}"]`);
     const textSpan = todoItem.querySelector('.text');
     const oldText = textSpan.textContent;
 
     const saveText = () => {
-        todos[index].text = input.value.trim();
+        const todo = todos.find(todo => todo.id === parseInt(id, 10));
+        if (todo) {
+            todo.text = input.value.trim();
+        }
         renderTodos();
     };
 
-    const input = createEditInput(index, oldText, saveText);
+    const input = createEditInput(id, oldText, saveText);
 
     todoItem.replaceChild(input, textSpan);
     input.focus();
 };
 
+// Обработка события ввода при редактировании задачи
 const handleEditInput = (event) => {
     if (event.target.matches('.edit-input')) {
         if (event.type === 'focusout' || (event.type === 'keydown' && event.key === 'Enter')) {
-            const index = event.target.closest('li').dataset.id;
-            todos[index].text = event.target.value.trim();
-        renderTodos();
+            const id = parseInt(event.target.closest('li').dataset.id, 10);
+            const todo = todos.find(todo => todo.id === id);
+            if (todo) {
+                todo.text = event.target.value.trim();
+            }
+            renderTodos();
         }
     }
 };
 
+// Отметить все задачи как выполненные/невыполненные
 const checkAllTodos = (event) => {
     const isChecked = event.target.checked;
     todos.forEach(todo => {
@@ -131,42 +152,50 @@ const checkAllTodos = (event) => {
     renderTodos();
 };
 
+// Добавление задачи по нажатию клавиши Enter
 const handleInputKeydown = (event) => {
     if (event.key === 'Enter') {
         addTodo();
     }
 };
 
+// Обработка изменения состояния выполнения задачи
 const handleTodoListChange = (event) => {
     if (event.target.matches('input[type="checkbox"]')) {
         toggleComplete(event.target.closest('li').dataset.id);
     }
 };
 
+// Обработка клика по кнопке удаления задачи
 const handleTodoListClick = (event) => {
     if (event.target.matches('.delete')) {
-        deleteTodo(event.target.closest('li').dataset.id);
+        const id = event.target.closest('li').dataset.id;
+        deleteTodo(id);
     }
 };
 
+// Обработка двойного клика по тексту задачи для редактирования
 const handleTodoListDoubleClick = (event) => {
     if (event.target.matches('.text')) {
         editTodoText(event.target.closest('li').dataset.id);
     }
 };
 
+// Обработка клика по кнопкам фильтрации задач
 const handleFilterClick = (filter) => {
     currentFilter = filter;
     currentPage = 1;
     renderTodos();
 };
 
+// Обновление кнопок фильтрации в зависимости от выбранного фильтра
 const updateFilterButtons = () => {
     filterAllButton.classList.toggle('active', currentFilter === 'all');
     filterActiveButton.classList.toggle('active', currentFilter === 'active');
     filterCompletedButton.classList.toggle('active', currentFilter === 'completed');
 };
 
+// Отображение кнопок пагинации
 const renderPagination = (totalPages) => {
     paginationContainer.innerHTML = '';
 
@@ -181,6 +210,7 @@ const renderPagination = (totalPages) => {
     }
 };
 
+// Обработка клика по кнопкам пагинации
 const handlePageClick = (event) => {
     if (event.target.matches('.page-number')) {
         currentPage = parseInt(event.target.textContent, 10);
@@ -188,6 +218,7 @@ const handlePageClick = (event) => {
     }
 };
 
+// Привязка обработчиков событий
 input.addEventListener('keydown', handleInputKeydown);
 addButton.addEventListener('click', addTodo);
 deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
@@ -202,6 +233,6 @@ todoList.addEventListener('focusout', handleEditInput);
 todoList.addEventListener('keydown', handleEditInput);
 paginationContainer.addEventListener('click', handlePageClick);
 
+// Первоначальное отображение списка задач
 renderTodos();
-
 })();
