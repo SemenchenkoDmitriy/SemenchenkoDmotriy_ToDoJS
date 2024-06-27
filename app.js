@@ -31,7 +31,7 @@ const renderTodos = () => {
         todoList.innerHTML += `
             <li class="todo-item" data-id="${todo.id}">
                 <input type="checkbox" ${todo.completed ? 'checked' : ''} data-id="${todo.id}">
-                <span class="text" data-id="${todo.id}">${todo.text}</span>
+                <span class="text" data-id="${todo.id}">${escapeHtml(todo.text)}</span>
                 <span class="delete" data-id="${todo.id}">&times;</span>
             </li>
         `;
@@ -40,6 +40,19 @@ const renderTodos = () => {
     updateCounters();
     renderPagination(totalPages);
     updateFilterButtons();
+};
+
+// Для проверки экранирования &quot &#8470; &#58; &#37; &#63; &#42;
+const escapeHtml = (text) => {
+    const map = {
+        '"': '&quot;',
+        '№': '&#8470;',
+        '%': '&#37;',
+        ':': '&#58;',
+        '?': '&#63;',
+        '*': '&#42;',
+    };
+    return text.replace(/["№%:?*]/g, (m) => map[m]);
 };
 
 // Фильтрация задач по текущему фильтру
@@ -67,7 +80,7 @@ const paginateTodos = (todos, page, itemsPerPage) => {
 
 // Добавление новой задачи
 const addTodo = () => {
-    const text = input.value.trim();
+    const text = escapeHtml(input.value.trim());
     if (text !== '') {
         todos.push({ id: Date.now(), text, completed: false });
         input.value = '';
@@ -125,7 +138,7 @@ const editTodoText = (id) => {
     const saveText = () => {
         const todo = todos.find(todo => todo.id === parseInt(id, 10));
         if (todo) {
-            todo.text = input.value.trim();
+            todo.text = escapeHtml(input.value.trim());
         }
         renderTodos();
     };
@@ -142,7 +155,7 @@ const handleEditInput = (event) => {
         if (event.type === EVENT_FOCUSOUT || (event.type === EVENT_KEYDOWN && event.key === KEY_ENTER)) {
             const id = parseInt(event.target.closest('li').dataset.id, 10);
             const todo = todos.find(todo => todo.id === id);
-            const newText = event.target.value.trim();
+            const newText = escapeHtml(event.target.value.trim());
             if (todo && newText !== '') {
                 todo.text = newText;
             }
