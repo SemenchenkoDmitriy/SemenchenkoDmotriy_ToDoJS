@@ -35,7 +35,7 @@ const renderTodos = () => {
     updateFilterButtons();
 };
 
-// Фильтрация задач по текущему фильтру (все, активные, выполненные)
+// Фильтрация задач по текущему фильтру 
 const filterTodos = (todos, filter) => {
     return todos.filter(todo => {
         if (filter === 'active') return !todo.completed;
