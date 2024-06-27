@@ -142,8 +142,9 @@ const handleEditInput = (event) => {
         if (event.type === EVENT_FOCUSOUT || (event.type === EVENT_KEYDOWN && event.key === KEY_ENTER)) {
             const id = parseInt(event.target.closest('li').dataset.id, 10);
             const todo = todos.find(todo => todo.id === id);
-            if (todo) {
-                todo.text = event.target.value.trim();
+            const newText = event.target.value.trim();
+            if (todo && newText !== '') {
+                todo.text = newText;
             }
             renderTodos();
         }
