@@ -1,1 +1,1 @@
-Приложение ToDoJS : https://semenchenkodmitriy.github.io/SemenchenkoDmotriy_ToDoJS
+Приложение ToDoJS : 
