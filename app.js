@@ -5,11 +5,6 @@ let currentFilter = 'all';
 let currentPage = 1;
 
 const ITEMS_PER_PAGE = 5;
-const EVENT_CLICK = 'click';
-const EVENT_CHANGE = 'change';
-const EVENT_KEYDOWN = 'keydown';
-const EVENT_DBLCLICK = 'dblclick';
-const EVENT_FOCUSOUT = 'focusout';
 const KEY_ENTER = 'Enter';
 const input = document.querySelector('.todo-app input[type="text"]');
 const addButton = document.querySelector('.add-button');
@@ -77,6 +72,7 @@ const paginateTodos = (todos, page, itemsPerPage) => {
         totalPages: totalPages,
     };
 };
+
 
 // Добавление новой задачи
 const addTodo = () => {
@@ -152,7 +148,7 @@ const editTodoText = (id) => {
 // Обработка события ввода при редактировании задачи
 const handleEditInput = (event) => {
     if (event.target.matches('.edit-input')) {
-        if (event.type === EVENT_FOCUSOUT || (event.type === EVENT_KEYDOWN && event.key === KEY_ENTER)) {
+        if (event.type === 'focusout' || (event.type === 'keydown' && event.key === KEY_ENTER)) {
             const id = parseInt(event.target.closest('li').dataset.id, 10);
             const todo = todos.find(todo => todo.id === id);
             const newText = escapeHtml(event.target.value.trim());
@@ -241,19 +237,19 @@ const handlePageClick = (event) => {
 };
 
 // Привязка обработчиков событий
-input.addEventListener(EVENT_KEYDOWN, handleInputKeydown);
-addButton.addEventListener(EVENT_CLICK, addTodo);
-deleteAllCompletedButton.addEventListener(EVENT_CLICK, deleteAllCompleted);
-checkAllCheckbox.addEventListener(EVENT_CHANGE, checkAllTodos);
-todoList.addEventListener(EVENT_CHANGE, handleTodoListChange);
-todoList.addEventListener(EVENT_CLICK, handleTodoListClick);
-todoList.addEventListener(EVENT_DBLCLICK, handleTodoListDoubleClick);
-filterAllButton.addEventListener(EVENT_CLICK, () => handleFilterClick('all'));
-filterActiveButton.addEventListener(EVENT_CLICK, () => handleFilterClick('active'));
-filterCompletedButton.addEventListener(EVENT_CLICK, () => handleFilterClick('completed'));
-todoList.addEventListener(EVENT_FOCUSOUT, handleEditInput);
-todoList.addEventListener(EVENT_KEYDOWN, handleEditInput);
-paginationContainer.addEventListener(EVENT_CLICK, handlePageClick);
+input.addEventListener('keydown', handleInputKeydown);
+addButton.addEventListener('click', addTodo);
+deleteAllCompletedButton.addEventListener('click', deleteAllCompleted);
+checkAllCheckbox.addEventListener('change', checkAllTodos);
+todoList.addEventListener('change', handleTodoListChange);
+todoList.addEventListener('click', handleTodoListClick);
+todoList.addEventListener('dblclick', handleTodoListDoubleClick);
+filterAllButton.addEventListener('click', () => handleFilterClick('all'));
+filterActiveButton.addEventListener('click', () => handleFilterClick('active'));
+filterCompletedButton.addEventListener('click', () => handleFilterClick('completed'));
+todoList.addEventListener('focusout', handleEditInput);
+todoList.addEventListener('keydown', handleEditInput);
+paginationContainer.addEventListener('click', handlePageClick);
 
 // Первоначальное отображение списка задач
 renderTodos();
