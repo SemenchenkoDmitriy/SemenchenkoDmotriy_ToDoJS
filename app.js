@@ -6,6 +6,7 @@ let currentPage = 1;
 
 const ITEMS_PER_PAGE = 5;
 const KEY_ENTER = 'Enter';
+const KEY_ESCAPE = 'Escape';
 const input = document.querySelector('.todo-app input[type="text"]');
 const addButton = document.querySelector('.add-button');
 const todoList = document.querySelector('.todo-app ul');
@@ -151,13 +152,15 @@ const editTodoText = (id) => {
 // Обработка события ввода при редактировании задачи
 const handleEditInput = (event) => {
     if (event.target.matches('.edit-input')) {
+        const id = parseInt(event.target.closest('li').dataset.id, 10);
+        const oldText = todos.find(todo => todo.id === id).text;
         if (event.type === 'focusout' || (event.type === 'keydown' && event.key === KEY_ENTER)) {
-            const id = parseInt(event.target.closest('li').dataset.id, 10);
-            const todo = todos.find(todo => todo.id === id);
             const newText = escapeHtml(event.target.value.trim());
-            if (todo && newText !== '') {
-                todo.text = newText;
+            if (newText !== '') {
+                todos.find(todo => todo.id === id).text = newText;
             }
+            renderTodos();
+        } else if (event.type === 'keydown' && event.key === KEY_ESCAPE) {
             renderTodos();
         }
     }
