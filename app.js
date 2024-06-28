@@ -51,7 +51,7 @@ const escapeHtml = (text) => {
         '*': '&#42;',
         '"': '&quot;',
     };
-    return text.replace(/[<>/№%:?*]/g, (m) => map[m]);
+    return text.replace(/[<>/№%:?*"]/g, (m) => map[m]);
 };
 
 // Фильтрация задач по текущему фильтру
@@ -59,7 +59,7 @@ const filterTodos = (todos, filter) => {
     return todos.filter(todo => {
         if (filter === 'active') return !todo.completed;
         if (filter === 'completed') return todo.completed;
-            return true;
+        return true;
     });
 };
 
@@ -77,10 +77,9 @@ const paginateTodos = (todos, page, itemsPerPage) => {
     };
 };
 
-
 // Добавление новой задачи
 const addTodo = () => {
-    const text = escapeHtml(input.value.trim());
+    const text = escapeHtml(input.value.trim().replace(/\s+/g, ' '));
     if (text !== '') {
         todos.push({ id: Date.now(), text, completed: false });
         input.value = '';
@@ -97,7 +96,7 @@ const deleteTodo = (id) => {
 
 // Переключение состояния выполнения задачи
 const toggleComplete = (id) => {
-        const todo = todos.find(todo => todo.id === parseInt(id, 10));
+    const todo = todos.find(todo => todo.id === parseInt(id, 10));
     if (todo) {
         todo.completed = !todo.completed;
     }
@@ -120,11 +119,12 @@ const deleteAllCompleted = () => {
 };
 
 // Создание элемента ввода для редактирования текста задачи
-const createEditInput = (id, oldText, saveTextCallback) => {
+const createEditInput = (id, oldText) => {
     const input = document.createElement('input');
     input.type = 'text';
     input.value = oldText;
     input.className = 'edit-input';
+    input.dataset.oldText = oldText; // Сохраняем старый текст в data-атрибуте
 
     return input;
 };
@@ -135,15 +135,7 @@ const editTodoText = (id) => {
     const textSpan = todoItem.querySelector('.text');
     const oldText = textSpan.textContent;
 
-    const saveText = () => {
-        const todo = todos.find(todo => todo.id === parseInt(id, 10));
-        if (todo) {
-            todo.text = escapeHtml(input.value.trim());
-        }
-        renderTodos();
-    };
-
-    const input = createEditInput(id, oldText, saveText);
+    const input = createEditInput(id, oldText);
 
     todoItem.replaceChild(input, textSpan);
     input.focus();
@@ -153,14 +145,15 @@ const editTodoText = (id) => {
 const handleEditInput = (event) => {
     if (event.target.matches('.edit-input')) {
         const id = parseInt(event.target.closest('li').dataset.id, 10);
-        const oldText = todos.find(todo => todo.id === id).text;
+
         if (event.type === 'focusout' || (event.type === 'keydown' && event.key === KEY_ENTER)) {
-            const newText = escapeHtml(event.target.value.trim());
+            const newText = escapeHtml(event.target.value.trim().replace(/\s+/g, ' '));
             if (newText !== '') {
                 todos.find(todo => todo.id === id).text = newText;
             }
             renderTodos();
         } else if (event.type === 'keydown' && event.key === KEY_ESCAPE) {
+            event.target.value = event.target.dataset.oldText; // Восстанавливаем старый текст
             renderTodos();
         }
     }
