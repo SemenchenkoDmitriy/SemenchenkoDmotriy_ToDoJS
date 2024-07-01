@@ -68,34 +68,40 @@ textarea::placeholder {
 }
 
 .pagination-container {
-    height: 50px; 
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: auto; /* Добавлено для предотвращения выхода за рамки контейнера */
-    flex-wrap: wrap; /* Добавлено для переноса кнопок на новую строку при необходимости */
+    flex-wrap: wrap;
+    overflow: auto;
+    margin-top: 1rem;
 }
 
 .pagination {
     display: flex;
-    flex-wrap: wrap; /* Добавлено для переноса кнопок на новую строку при необходимости */
+    flex-wrap: wrap;
     justify-content: center;
-    margin-top: 1rem;
 }
 
 .pagination button {
-    background: #008EB0; /* Синий цвет фона */
-    color: #fff; /* Белый цвет текста */
     border: none;
     padding: 0.5rem 1rem;
     margin: 0.5rem;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.3s; /* Плавный переход для фона и трансформаций */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Добавление тени */
+}
+
+.pagination button:hover {
+    background: #015b72; /* Цвет фона при наведении */
+    transform: translateY(-2px); 
 }
 
 .pagination button:disabled {
-    background: #ddd;
+    background: #bebebe;
+    color: #000000;
     cursor: not-allowed;
+    box-shadow: none; 
 }
 
 .pagination .page-number {
@@ -107,5 +113,5 @@ textarea::placeholder {
 }
 
 .todo-list {
-    min-height: calc(5 * 3rem);
+    min-height: calc(5 * 3rem); /* Adjust 3rem to the height of a single todo item */
 }
