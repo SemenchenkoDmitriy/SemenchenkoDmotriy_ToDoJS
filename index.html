@@ -1,31 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TodoJS App</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="todo-app">
-        <h1 class="center-text">TodoJS App</h1>
-        <input type="text" placeholder="Add a new todo">
-        <button class="add-button">Add</button>
-        <ul></ul>
-        <div>
-            <input type="checkbox" id="check-all">
-            <label for="check-all">Check All</label>
-        </div>
-        <button class="red">Delete All Completed</button>
-        <div class="filters center-text">
-            <button id="filter-all">All</button>
-            <button id="filter-active">Active</button>
-            <button id="filter-completed">Completed</button>
-        </div>
-        <div class="pagination-container">
-            <div class="pagination center-text"></div> <!-- Контейнер для пагинации -->
-        </div>
+      <h1 class="center-text">TodoJS App</h1>
+      <input type="text" placeholder="Add a new todo" />
+      <button class="add-button">Add</button>
+      <ul></ul>
+      <div>
+        <input type="checkbox" id="check-all" />
+        <label for="check-all">Check All</label>
+      </div>
+      <button class="red">Delete All Completed</button>
+      <div class="filters center-text">
+        <button id="filter-all">All</button>
+        <button id="filter-active">Active</button>
+        <button id="filter-completed">Completed</button>
+      </div>
+      <div class="pagination-container">
+        <div class="pagination center-text"></div>
+        <!-- Контейнер для пагинации -->
+      </div>
     </div>
     <script src="app.js"></script>
-</body>
+  </body>
 </html>

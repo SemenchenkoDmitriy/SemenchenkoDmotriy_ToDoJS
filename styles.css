@@ -1,117 +1,119 @@
 body {
-    background-color: #ee8cc2;
-    padding: 2rem;
+  background-color: #ee8cc2;
+  padding: 2rem;
 }
 
 .todo-app {
-    max-width: 600px;
-    margin: 0 auto;
-    background: white;
-    padding: 2rem;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 button {
-    background: #008EB0; /* Синий цвет фона */
-    color: #fff; /* Белый цвет текста */
-    border: none;
-    padding: 0.5rem 1rem;
-    margin: 0.5rem;
-    cursor: pointer;
-    border-radius: 3px;
+  background: #008eb0; /* Синий цвет фона */
+  color: #fff; /* Белый цвет текста */
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  cursor: pointer;
+  border-radius: 3px;
 }
 
 .red {
-    background: #C1172C;
+  background: #c1172c;
 }
 
 .center-text {
-    text-align: center;
+  text-align: center;
 }
 
 .todo-item input[type="checkbox"] {
-    margin-right: 1rem;
+  margin-right: 1rem;
 }
 
 .todo-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
 }
 
 .todo-item .text {
-    flex: 1;
-    word-break: break-word; /* Переносит слово на следующую строку */
-    white-space: pre-wrap;  /* Сохраняет пробелы и переносы строк */
-    max-width: 100%;        /* Устанавливает максимальную ширину для текста */
+  flex: 1;
+  word-break: break-word; /* Переносит слово на следующую строку */
+  white-space: pre-wrap; /* Сохраняет пробелы и переносы строк */
+  max-width: 100%; /* Устанавливает максимальную ширину для текста */
 }
 
 .todo-item .delete {
-    color: red;
-    cursor: pointer;
+  color: red;
+  cursor: pointer;
 }
 
 textarea::placeholder {
-    text-align: center;
+  text-align: center;
 }
 
 .add-button {
-    background: #008EB0; /* Синий цвет фона */
-    color: #fff; /* Белый цвет текста */
+  background: #008eb0; /* Синий цвет фона */
+  color: #fff; /* Белый цвет текста */
 }
 
 .filters button.active {
-    background: #004D66; /* Темно-синий цвет для активного состояния */
+  background: #004d66; /* Темно-синий цвет для активного состояния */
 }
 
 .pagination-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    overflow: auto;
-    margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow: auto;
+  margin-top: 1rem;
 }
 
 .pagination {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .pagination button {
-    border: none;
-    padding: 0.5rem 1rem;
-    margin: 0.5rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s, transform 0.3s; /* Плавный переход для фона и трансформаций */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Добавление тени */
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition:
+    background 0.3s,
+    transform 0.3s; /* Плавный переход для фона и трансформаций */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Добавление тени */
 }
 
 .pagination button:hover {
-    background: #015b72; /* Цвет фона при наведении */
-    transform: translateY(-2px); 
+  background: #015b72; /* Цвет фона при наведении */
+  transform: translateY(-2px);
 }
 
 .pagination button:disabled {
-    background: #bebebe;
-    color: #000000;
-    cursor: not-allowed;
-    box-shadow: none; 
+  background: #bebebe;
+  color: #000000;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .pagination .page-number {
-    background: transparent;
-    color: #000;
-    border: none;
-    margin: 0 0.5rem;
-    cursor: pointer;
+  background: transparent;
+  color: #000;
+  border: none;
+  margin: 0 0.5rem;
+  cursor: pointer;
 }
 
 .todo-list {
-    min-height: calc(5 * 3rem); 
+  min-height: calc(5 * 3rem);
 }
