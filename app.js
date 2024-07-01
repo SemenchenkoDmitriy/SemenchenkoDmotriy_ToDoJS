@@ -86,6 +86,9 @@ const addTodo = () => {
     if (text !== '') {
         todos.push({ id: Date.now(), text, completed: false });
         input.value = '';
+        if (currentFilter === 'completed') {
+            currentFilter = 'all';
+        }
         currentPage = Math.ceil(todos.length / ITEMS_PER_PAGE);
         renderTodos();
     }
