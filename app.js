@@ -119,13 +119,13 @@ const updateCounters = () => {
     filterAllButton.textContent = `All (${todos.length})`;
     filterActiveButton.textContent = `Active (${remaining})`;
     filterCompletedButton.textContent = `Completed (${completed})`;
+    checkAllCheckbox.checked = todos.length > 0 && todos.every(todo => todo.completed);
 };
 
 // Удаление всех выполненных задач
 const deleteAllCompleted = () => {
     todos = todos.filter(todo => !todo.completed);
     currentPage = Math.min(currentPage, Math.ceil(todos.length / ITEMS_PER_PAGE));
-    checkAllCheckbox.checked = false; // Сброс галочки "check all"
     renderTodos();
 };
 
