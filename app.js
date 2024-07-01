@@ -136,6 +136,7 @@ const createEditInput = (id, oldText) => {
     input.value = oldText;
     input.className = 'edit-input';
     input.dataset.oldText = oldText; // Сохраняем старый текст в data-атрибуте
+    input.maxLength = 255; // Ограничение длины ввода
 
     return input;
 };
