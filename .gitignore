@@ -1,6 +1,8 @@
 /.history/*
 
-.eslintrc.js
+.eslintrc.json
+
+.prettierrc.json
 
 package.json
 
