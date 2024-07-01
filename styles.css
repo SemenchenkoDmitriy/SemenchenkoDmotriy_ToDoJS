@@ -113,5 +113,5 @@ textarea::placeholder {
 }
 
 .todo-list {
-    min-height: calc(5 * 3rem); /* Adjust 3rem to the height of a single todo item */
+    min-height: calc(5 * 3rem); 
 }
