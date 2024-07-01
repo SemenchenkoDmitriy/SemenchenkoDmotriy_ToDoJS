@@ -94,6 +94,9 @@ const addTodo = () => {
 // Удаление задачи по id
 const deleteTodo = (id) => {
     todos = todos.filter(todo => todo.id !== parseInt(id, 10));
+    if ((currentPage - 1) * ITEMS_PER_PAGE >= todos.length && currentPage > 1) {
+        currentPage--;
+    }
     renderTodos();
 };
 
@@ -118,6 +121,8 @@ const updateCounters = () => {
 // Удаление всех выполненных задач
 const deleteAllCompleted = () => {
     todos = todos.filter(todo => !todo.completed);
+    currentPage = Math.min(currentPage, Math.ceil(todos.length / ITEMS_PER_PAGE));
+    checkAllCheckbox.checked = false; // Сброс галочки "check all"
     renderTodos();
 };
 
