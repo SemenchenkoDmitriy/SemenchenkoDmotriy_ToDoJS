@@ -79,7 +79,10 @@ const paginateTodos = (todos, page, itemsPerPage) => {
 
 // Добавление новой задачи
 const addTodo = () => {
-    const text = escapeHtml(input.value.trim().replace(/\s+/g, ' '));
+    let text = escapeHtml(input.value.trim().replace(/\s+/g, ' '));
+    if (text.length > 255) {
+        text = text.substring(0, 255);
+    }
     if (text !== '') {
         todos.push({ id: Date.now(), text, completed: false });
         input.value = '';
@@ -147,7 +150,10 @@ const handleEditInput = (event) => {
         const id = parseInt(event.target.closest('li').dataset.id, 10);
 
         if (event.type === 'focusout' || (event.type === 'keydown' && event.key === KEY_ENTER)) {
-            const newText = escapeHtml(event.target.value.trim().replace(/\s+/g, ' '));
+            let newText = escapeHtml(event.target.value.trim().replace(/\s+/g, ' '));
+            if (newText.length > 255) {
+                newText = newText.substring(0, 255);
+            }
             if (newText !== '') {
                 todos.find(todo => todo.id === id).text = newText;
             }
