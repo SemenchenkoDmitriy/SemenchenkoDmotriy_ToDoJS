@@ -1,6 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable no-shadow */
-/* eslint-disable no-use-before-define */
 (() => {
   let todos = [];
   let currentFilter = "all";
