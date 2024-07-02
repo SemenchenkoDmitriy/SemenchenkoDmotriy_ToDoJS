@@ -17,6 +17,8 @@
   const filterActiveButton = document.getElementById("filter-active");
   const filterCompletedButton = document.getElementById("filter-completed");
   const paginationContainer = document.querySelector(".pagination");
+  const getTodoItem = (id) => todoList.querySelector(`li[data-id="${id}"]`);
+  const getTextSpan = (todoItem) => todoItem.querySelector(".text");
 
   // Отображение списка задач с учетом фильтрации и пагинации
   const renderTodos = () => {
@@ -100,7 +102,7 @@
 
   // Удаление задачи по id
   const deleteTodo = (id) => {
-    todos = todos.filter((todo) => todo.id !== parseInt(id, 10));
+    todos = todos.filter((todo) => todo.id !== parseInt(id));
     if ((currentPage - 1) * ITEMS_PER_PAGE >= todos.length && currentPage > 1) {
       currentPage--;
     }
@@ -109,7 +111,7 @@
 
   // Переключение состояния выполнения задачи
   const toggleComplete = (id) => {
-    const todo = todos.find((todo) => todo.id === parseInt(id, 10));
+    const todo = todos.find((todo) => todo.id === parseInt(id));
     if (todo) {
       todo.completed = !todo.completed;
     }
@@ -154,8 +156,8 @@
 
   // Редактирование текста задачи
   const editTodoText = (id) => {
-    const todoItem = todoList.querySelector(`li[data-id="${id}"]`);
-    const textSpan = todoItem.querySelector(".text");
+    const todoItem = getTodoItem(id);
+    const textSpan = getTextSpan(todoItem);
     const oldText = textSpan.textContent;
 
     const input = createEditInput(id, oldText);
@@ -167,7 +169,7 @@
   // Обработка события ввода при редактировании задачи
   const handleEditInput = (event) => {
     if (event.target.matches(".edit-input")) {
-      const id = parseInt(event.target.closest("li").dataset.id, 10);
+      const id = parseInt(event.target.closest("li").dataset.id);
 
       if (
         event.type === "focusout" ||
@@ -265,7 +267,7 @@
   // Обработка клика по кнопкам пагинации
   const handlePageClick = (event) => {
     if (event.target.matches(".page-number")) {
-      currentPage = parseInt(event.target.textContent, 10);
+      currentPage = parseInt(event.target.textContent);
       renderTodos();
     }
   };
