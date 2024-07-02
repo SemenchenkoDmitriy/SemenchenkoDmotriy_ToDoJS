@@ -11,7 +11,7 @@
   const todoList = document.querySelector(".todo-app ul");
   const checkAllCheckbox = document.getElementById("check-all");
   const deleteAllCompletedButton = document.querySelector(
-    ".todo-app button.red",
+    ".todo-app button.red"
   );
   const filterAllButton = document.getElementById("filter-all");
   const filterActiveButton = document.getElementById("filter-active");
@@ -24,7 +24,7 @@
     const { paginatedTodos, totalPages } = paginateTodos(
       filteredTodos,
       currentPage,
-      ITEMS_PER_PAGE,
+      ITEMS_PER_PAGE
     );
 
     todoList.innerHTML = "";
@@ -121,7 +121,7 @@
   const updateCounters = () => {
     const remaining = todos.reduce(
       (count, todo) => (!todo.completed ? count + 1 : count),
-      0,
+      0
     );
     const completed = todos.length - remaining;
     filterAllButton.textContent = `All (${todos.length})`;
@@ -136,7 +136,7 @@
     todos = todos.filter((todo) => !todo.completed);
     currentPage = Math.min(
       currentPage,
-      Math.ceil(todos.length / ITEMS_PER_PAGE),
+      Math.ceil(todos.length / ITEMS_PER_PAGE)
     );
     renderTodos();
   };
@@ -175,7 +175,7 @@
         (event.type === "keydown" && event.key === KEY_ENTER)
       ) {
         let newText = escapeHtml(
-          event.target.value.trim().replace(/\s+/g, " "),
+          event.target.value.trim().replace(/\s+/g, " ")
         );
         if (newText.length > 255) {
           newText = newText.substring(0, 255);
@@ -244,7 +244,7 @@
     filterActiveButton.classList.toggle("active", currentFilter === "active");
     filterCompletedButton.classList.toggle(
       "active",
-      currentFilter === "completed",
+      currentFilter === "completed"
     );
   };
 
@@ -281,10 +281,10 @@
   todoList.addEventListener("dblclick", handleTodoListDoubleClick);
   filterAllButton.addEventListener("click", () => handleFilterClick("all"));
   filterActiveButton.addEventListener("click", () =>
-    handleFilterClick("active"),
+    handleFilterClick("active")
   );
   filterCompletedButton.addEventListener("click", () =>
-    handleFilterClick("completed"),
+    handleFilterClick("completed")
   );
   todoList.addEventListener("focusout", handleEditInput);
   todoList.addEventListener("keydown", handleEditInput);
