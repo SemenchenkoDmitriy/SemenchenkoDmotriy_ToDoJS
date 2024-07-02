@@ -1,3 +1,6 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-shadow */
+/* eslint-disable no-use-before-define */
 (() => {
   let todos = [];
   let currentFilter = "all";
@@ -60,13 +63,12 @@
   };
 
   // Фильтрация задач по текущему фильтру
-  const filterTodos = (todos, filter) => {
-    return todos.filter((todo) => {
+  const filterTodos = (todos, filter) =>
+    todos.filter((todo) => {
       if (filter === "active") return !todo.completed;
       if (filter === "completed") return todo.completed;
       return true;
     });
-  };
 
   // Пагинация задач
   const paginateTodos = (todos, page, itemsPerPage) => {
@@ -78,7 +80,7 @@
 
     return {
       paginatedTodos: todos.slice(start, end),
-      totalPages: totalPages,
+      totalPages,
     };
   };
 
@@ -219,7 +221,7 @@
   // Обработка клика по кнопке удаления задачи
   const handleTodoListClick = (event) => {
     if (event.target.matches(".delete")) {
-      const id = event.target.closest("li").dataset.id;
+      const { id } = event.target.closest("li").dataset;
       deleteTodo(id);
     }
   };
