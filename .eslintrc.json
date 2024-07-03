@@ -10,9 +10,6 @@
     "plugin:import/recommended",
     "airbnb",
     "prettier"
-    /* eslint-disable no-plusplus */
-    /* eslint-disable no-shadow */
-    /* eslint-disable no-use-before-define */
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -23,6 +20,9 @@
   },
   "plugins": ["react"],
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "no-plusplus": "off",
+    "no-shadow": "off",
+    "no-use-before-define": "off"
   }
 }
