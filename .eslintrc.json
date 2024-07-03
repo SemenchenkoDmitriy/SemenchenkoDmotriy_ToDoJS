@@ -23,6 +23,8 @@
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-plusplus": "off",
     "no-shadow": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "radix": "off",
+    "no-param-reassign": "off"
   }
 }
