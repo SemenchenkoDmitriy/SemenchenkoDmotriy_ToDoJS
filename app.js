@@ -20,7 +20,6 @@
   const getTodoItem = (id) => todoList.querySelector(`li[data-id="${id}"]`);
   const getTextSpan = (todoItem) => todoItem.querySelector(".text");
 
-  // Отображение списка задач с учетом фильтрации и пагинации
   const renderTodos = () => {
     const filteredTodos = filterTodos(todos, currentFilter);
     const { paginatedTodos, totalPages } = paginateTodos(
@@ -45,7 +44,6 @@
     updateFilterButtons();
   };
 
-  // Для проверки экранирования &quot &#8470; &#58; &#37; &#63; &#42;
   const escapeHtml = (text) => {
     const map = {
       "<": "&lt;",
@@ -61,7 +59,6 @@
     return text.replace(/[<>/№%:?*"]/g, (m) => map[m]);
   };
 
-  // Фильтрация задач по текущему фильтру
   const filterTodos = (todos, filter) =>
     todos.filter((todo) => {
       if (filter === "active") return !todo.completed;
@@ -69,7 +66,6 @@
       return true;
     });
 
-  // Пагинация задач
   const paginateTodos = (todos, page, itemsPerPage) => {
     const totalPages = Math.ceil(todos.length / itemsPerPage);
     page = Math.min(page, totalPages);
@@ -83,7 +79,6 @@
     };
   };
 
-  // Добавление новой задачи
   const addTodo = () => {
     let text = escapeHtml(input.value.trim().replace(/\s+/g, " "));
     if (text.length > 255) {
@@ -100,7 +95,6 @@
     }
   };
 
-  // Удаление задачи по id
   const deleteTodo = (id) => {
     todos = todos.filter((todo) => todo.id !== parseInt(id));
     if ((currentPage - 1) * ITEMS_PER_PAGE >= todos.length && currentPage > 1) {
@@ -109,7 +103,6 @@
     renderTodos();
   };
 
-  // Переключение состояния выполнения задачи
   const toggleComplete = (id) => {
     const todo = todos.find((todo) => todo.id === parseInt(id));
     if (todo) {
@@ -118,7 +111,6 @@
     renderTodos();
   };
 
-  // Обновление счетчиков задач (все, активные, выполненные)
   const updateCounters = () => {
     const remaining = todos.reduce(
       (count, todo) => (!todo.completed ? count + 1 : count),
@@ -132,7 +124,6 @@
       todos.length > 0 && todos.every((todo) => todo.completed);
   };
 
-  // Удаление всех выполненных задач
   const deleteAllCompleted = () => {
     todos = todos.filter((todo) => !todo.completed);
     currentPage = Math.min(
@@ -142,19 +133,17 @@
     renderTodos();
   };
 
-  // Создание элемента ввода для редактирования текста задачи
   const createEditInput = (id, oldText) => {
     const input = document.createElement("input");
     input.type = "text";
     input.value = oldText;
     input.className = "edit-input";
-    input.dataset.oldText = oldText; // Сохраняем старый текст в data-атрибуте
-    input.maxLength = 255; // Ограничение длины ввода
+    input.dataset.oldText = oldText;
+    input.maxLength = 255;
 
     return input;
   };
 
-  // Редактирование текста задачи
   const editTodoText = (id) => {
     const todoItem = getTodoItem(id);
     const textSpan = getTextSpan(todoItem);
@@ -166,7 +155,6 @@
     input.focus();
   };
 
-  // Обработка события ввода при редактировании задачи
   const handleEditInput = (event) => {
     if (event.target.matches(".edit-input")) {
       const id = parseInt(event.target.closest("li").dataset.id);
@@ -186,13 +174,12 @@
         }
         renderTodos();
       } else if (event.type === "keydown" && event.key === KEY_ESCAPE) {
-        event.target.value = event.target.dataset.oldText; // Восстанавливаем старый текст
+        event.target.value = event.target.dataset.oldText;
         renderTodos();
       }
     }
   };
 
-  // Отметить все задачи как выполненные/невыполненные
   const checkAllTodos = (event) => {
     const isChecked = event.target.checked;
     todos.forEach((todo) => {
@@ -201,14 +188,12 @@
     renderTodos();
   };
 
-  // Добавление задачи по нажатию клавиши Enter
   const handleInputKeydown = (event) => {
     if (event.key === KEY_ENTER) {
       addTodo();
     }
   };
 
-  // Обработка изменения состояния выполнения задачи
   const handleTodoListChange = (event) => {
     if (event.target.matches('input[type="checkbox"]')) {
       toggleComplete(event.target.closest("li").dataset.id);
@@ -217,7 +202,6 @@
     }
   };
 
-  // Обработка клика по кнопке удаления задачи
   const handleTodoListClick = (event) => {
     if (event.target.matches(".delete")) {
       const { id } = event.target.closest("li").dataset;
@@ -225,21 +209,18 @@
     }
   };
 
-  // Обработка двойного клика по тексту задачи для редактирования
   const handleTodoListDoubleClick = (event) => {
     if (event.target.matches(".text")) {
       editTodoText(event.target.closest("li").dataset.id);
     }
   };
 
-  // Обработка клика по кнопкам фильтрации задач
   const handleFilterClick = (filter) => {
     currentFilter = filter;
     currentPage = 1;
     renderTodos();
   };
 
-  // Обновление кнопок фильтрации в зависимости от выбранного фильтра
   const updateFilterButtons = () => {
     filterAllButton.classList.toggle("active", currentFilter === "all");
     filterActiveButton.classList.toggle("active", currentFilter === "active");
@@ -249,7 +230,6 @@
     );
   };
 
-  // Отображение кнопок пагинации
   const renderPagination = (totalPages) => {
     paginationContainer.innerHTML = "";
 
@@ -264,7 +244,6 @@
     }
   };
 
-  // Обработка клика по кнопкам пагинации
   const handlePageClick = (event) => {
     if (event.target.matches(".page-number")) {
       currentPage = parseInt(event.target.textContent);
@@ -272,7 +251,6 @@
     }
   };
 
-  // Привязка обработчиков событий
   input.addEventListener("keydown", handleInputKeydown);
   addButton.addEventListener("click", addTodo);
   deleteAllCompletedButton.addEventListener("click", deleteAllCompleted);
@@ -291,6 +269,5 @@
   todoList.addEventListener("keydown", handleEditInput);
   paginationContainer.addEventListener("click", handlePageClick);
 
-  // Первоначальное отображение списка задач
   renderTodos();
 })();
